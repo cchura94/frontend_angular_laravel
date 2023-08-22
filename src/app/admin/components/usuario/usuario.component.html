@@ -1,0 +1,40 @@
+<h1>Gestión Usuario</h1>
+{{ usuarios | json }}
+
+
+<form [formGroup]="usuarioForm">
+    <label>Ingrese su Nombre</label>
+    <input type="text" formControlName="name">
+    <br>
+    <label>Ingrese su Correo</label>
+    <input type="email" formControlName="email">
+    <br>
+    <label for="">Ingrese su Contraseña</label>
+    <input type="password" formControlName="password">
+    <br>
+    <input type="button" [disabled]="!usuarioForm.valid" (click)="guardarUsuario()" value="Guardar Usuario">
+</form>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>CORREO</th>
+            <th>CREADO EN</th>
+            <th>GESTIÓN</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let us of usuarios">
+            <td>{{ us.id }}</td>
+            <td>{{ us.name }}</td>
+            <td>{{ us.email }}</td>
+            <td>{{ us.created_at }}</td>
+            <td>
+                <button (click)="funEditar(us)" >editar</button>
+                <button (click)="funEliminar(us)" >eliminar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

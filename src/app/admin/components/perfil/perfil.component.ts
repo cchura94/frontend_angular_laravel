@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -10,7 +11,7 @@ export class PerfilComponent {
 
   miperfil: any;
 
-  constructor(private authService: AuthService){
+  constructor(private authService: AuthService, private router: Router){
     this.obtenerPerfil()
   }
 
@@ -20,6 +21,18 @@ export class PerfilComponent {
         this.miperfil = res
       },
       (error) => {
+        console.log(error);
+      }
+    )
+  }
+
+  salir(){
+    this.authService.salir().subscribe(
+      (res: any) => {
+        localStorage.removeItem("access_token")
+        this.router.navigate(["/auth/login"]);
+
+      },(error) => {
         console.log(error);
       }
     )
