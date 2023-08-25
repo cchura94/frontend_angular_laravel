@@ -1,4 +1,6 @@
-<h1>Gestión Usuario</h1>
+<div class="card">
+
+    <h1>Gestión Usuario</h1>
 {{ usuarios | json }}
 
 
@@ -14,7 +16,7 @@
     <br>
     <input type="button" [disabled]="!usuarioForm.valid" (click)="guardarUsuario()" value="Guardar Usuario">
 </form>
-
+<!--
 <table border="1">
     <thead>
         <tr>
@@ -38,3 +40,30 @@
         </tr>
     </tbody>
 </table>
+-->
+
+<p-table [value]="usuarios" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Creado EN</th>
+            <th>Gestión</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-us>
+        <tr>
+            <td>{{ us.id }}</td>
+            <td>{{ us.name }}</td>
+            <td>{{ us.email }}</td>
+            <td>{{ us.created_at }}</td>
+            <td>
+                <button (click)="funEditar(us)" >editar</button>
+                <button (click)="funEliminar(us)" >eliminar</button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+</div>
