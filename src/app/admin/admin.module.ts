@@ -8,19 +8,33 @@ import { UsuarioComponent } from './components/usuario/usuario.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+
+
+import { CategoriaComponent } from './components/categoria/categoria.component';
+import { ProductoComponent } from './components/producto/producto.component'
 
 
 @NgModule({
   declarations: [
     PerfilComponent,
-    UsuarioComponent
+    UsuarioComponent,
+    CategoriaComponent,
+    ProductoComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     CoreModule,
     ReactiveFormsModule,
-    TableModule
+    TableModule,
+    DialogModule,
+    ButtonModule,
+    InputTextModule,
+    InputTextareaModule
   ]
 })
 export class AdminModule { }

@@ -4,6 +4,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http"
 import { AuthService } from './services/auth.service';
 import { PedidoInterceptor } from '../interceptors/pedido.interceptor';
 import { UsuarioService } from './services/usuario.service';
+import { CategoriaService } from './services/categoria.service';
+import { ProductoService } from './services/producto.service';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { UsuarioService } from './services/usuario.service';
       useClass: PedidoInterceptor,
       multi: true
     },
-    UsuarioService
+    UsuarioService,
+    CategoriaService,
+    ProductoService
   ]
 })
 export class CoreModule { }

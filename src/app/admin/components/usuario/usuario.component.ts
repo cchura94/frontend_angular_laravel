@@ -15,6 +15,10 @@ export class UsuarioComponent {
     password: new FormControl('', [Validators.required])
   });
 
+  visible: boolean = false;
+
+    
+
   usuarios:any[] = []
   usuario_id: any = null;
 
@@ -83,5 +87,9 @@ export class UsuarioComponent {
     }
 
   }
+
+  showDialog() {
+    this.visible = true;
+}
 
 }

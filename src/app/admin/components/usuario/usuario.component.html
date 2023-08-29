@@ -42,6 +42,22 @@
 </table>
 -->
 
+<p-button (click)="showDialog()" icon="pi pi-external-link" label="Nuevo Usuario"></p-button>
+<p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <form [formGroup]="usuarioForm">
+        <label>Ingrese su Nombre</label>
+        <input type="text" formControlName="name">
+        <br>
+        <label>Ingrese su Correo</label>
+        <input type="email" formControlName="email">
+        <br>
+        <label for="">Ingrese su Contraseña</label>
+        <input type="password" formControlName="password">
+        <br>
+        <input type="button" [disabled]="!usuarioForm.valid" (click)="guardarUsuario()" value="Guardar Usuario">
+    </form>
+</p-dialog>
+
 <p-table [value]="usuarios" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
         <tr>

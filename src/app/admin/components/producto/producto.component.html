@@ -1,0 +1,43 @@
+<div class="card">
+    <h1>Productos</h1>
+
+    <p-table
+        #dt
+        [value]="products"
+        [rows]="10"
+        [paginator]="true"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [rowHover]="true"
+        dataKey="id"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} productos"
+        [showCurrentPageReport]="true"
+    >
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="nombre" style="min-width:15rem">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+            <th>Image</th>
+            <th pSortableColumn="precio">Precio <p-sortIcon field="precio"></p-sortIcon></th>
+            <th pSortableColumn="categoria_id" style="min-width:10rem">Categoria <p-sortIcon field="categoria_id"></p-sortIcon></th>
+            <th pSortableColumn="stock" style="min-width:10rem">Stock <p-sortIcon field="stock"></p-sortIcon></th>
+            <th></th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-product>
+        <tr>
+            <td>{{ product.nombre }}</td>
+            <td><img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.name" width="50" class="shadow-4" /></td>
+            <td>{{ product.precio | currency: 'USD' }}</td>
+            <td>{{ product.categoria_id }}</td>
+            <td>{{ product.stock }}</td>
+            <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+            </td>
+        </tr>
+    </ng-template>
+
+    </p-table>
+
+{{ products|json }}
+</div>
