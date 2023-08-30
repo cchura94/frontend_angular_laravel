@@ -1,10 +1,25 @@
 <div class="card">
     <h1>Productos</h1>
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+        </ng-template>
+    
+        <ng-template pTemplate="right">
+            <input id="busc" type="buscar" [formControl]="buscar" placeholder="buscar..." pInputText class="w-full md:w-30rem mb-5" style="padding:1rem" (keyup.enter)="listar()" class="mr-2 inline-block">
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+        </ng-template>
+    </p-toolbar>
 
+    
     <p-table
         #dt
         [value]="products"
-        [rows]="10"
+        [lazy]="true"
+        (onLazyLoad)="loadProductos($event)"
+        [loading]="loading"
+        [totalRecords]="totalRecords"
+        [rows]="4"
         [paginator]="true"
         [tableStyle]="{ 'min-width': '75rem' }"
         [rowHover]="true"
@@ -26,7 +41,7 @@
     <ng-template pTemplate="body" let-product>
         <tr>
             <td>{{ product.nombre }}</td>
-            <td><img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.name" width="50" class="shadow-4" /></td>
+            <td><img *ngIf="product.imagen" [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.name" width="50" class="shadow-4" /></td>
             <td>{{ product.precio | currency: 'USD' }}</td>
             <td>{{ product.categoria_id }}</td>
             <td>{{ product.stock }}</td>
@@ -39,5 +54,58 @@
 
     </p-table>
 
-{{ products|json }}
+    <p-dialog [(visible)]="productDialog" [style]="{ width: '450px' }" header="Detalles de Producto" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content" [formGroup]="productoForm">
+            <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image" class="block m-auto pb-3" *ngIf="product.image" />
+            <div class="field">
+                <label for="name">Nombre</label>
+                <input type="text" pInputText id="name" formControlName="nombre" required autofocus />
+                <small class="p-error" *ngIf="submitted && !product.name">Name is required.</small>
+            </div>
+            <div class="field">
+                <label for="description">Descripción</label>
+                <textarea id="description" pInputTextarea formControlName="descripcion" required rows="3" cols="20"></textarea>
+            </div>
+    
+            <div class="field">
+                <label class="mb-3">Categoria</label>
+                <div class="formgrid grid">
+                    <div class="field-radiobutton col-6">
+                        <p-radioButton id="category1" name="category" value="Accessories" formControlName="categoria_id"></p-radioButton>
+                        <label for="category1">Accessories</label>
+                    </div>
+                    <div class="field-radiobutton col-6">
+                        <p-radioButton id="category2" name="category" value="Clothing" formControlName="categoria_id"></p-radioButton>
+                        <label for="category2">Clothing</label>
+                    </div>
+                    <div class="field-radiobutton col-6">
+                        <p-radioButton id="category3" name="category" value="Electronics" formControlName="categoria_id"></p-radioButton>
+                        <label for="category3">Electronics</label>
+                    </div>
+                    <div class="field-radiobutton col-6">
+                        <p-radioButton id="category4" name="category" value="Fitness" formControlName="categoria_id"></p-radioButton>
+                        <label for="category4">Fitness</label>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="price">Precio</label>
+                    <p-inputNumber id="price" formControlName="precio" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+                </div>
+                <div class="field col">
+                    <label for="quantity">Stock</label>
+                    <p-inputNumber id="quantity" formControlName="stock"></p-inputNumber>
+                </div>
+            </div>
+        </ng-template>
+    
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+        </ng-template>
+    </p-dialog>
+    
+<!--{{ products|json }}-->
 </div>

@@ -1,7 +1,10 @@
 <div class="card">
 
     <h1>Mi Perfil</h1>
-    <p>{{ miperfil | json }}</p>
+    <!--<p>{{ miperfil | json }}</p>-->
+    <h2>NOMBRE: {{ miperfil.name }}</h2>
+    <h2>Correo: {{ miperfil.email }}</h2>
+    <h2>Creado EN: {{ miperfil.created_at }}</h2>
     
     <button (click)="salir()">Salir</button>
 </div>
