@@ -18,7 +18,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 
 import { CategoriaComponent } from './components/categoria/categoria.component';
 import { ProductoComponent } from './components/producto/producto.component'
-
+import { FileUploadModule } from 'primeng/fileupload';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,9 @@ import { ProductoComponent } from './components/producto/producto.component'
     InputTextareaModule,
     ToolbarModule,
     InputNumberModule,
-    RadioButtonModule
+    RadioButtonModule,
+    FileUploadModule,
+    ToastModule
   ]
 })
 export class AdminModule { }

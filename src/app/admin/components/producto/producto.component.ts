@@ -1,12 +1,20 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LazyLoadEvent } from 'primeng/api';
+import { CategoriaService } from 'src/app/core/services/categoria.service';
 import { ProductoService } from 'src/app/core/services/producto.service';
+import { MessageService } from 'primeng/api';
+
+interface UploadEvent {
+  originalEvent: Event;
+  files: File[];
+}
 
 @Component({
   selector: 'app-producto',
   templateUrl: './producto.component.html',
-  styleUrls: ['./producto.component.scss']
+  styleUrls: ['./producto.component.scss'],
+  providers: [MessageService]
 })
 export class ProductoComponent {
   products: any[] = []
@@ -16,8 +24,13 @@ export class ProductoComponent {
   loading: boolean = false;
   product!: any;
   productDialog: boolean = false;
+  productDialogImagen: boolean = false
+  productoId: any;
+  uploadedFiles: any[] = [];
 
   submitted: boolean = false;
+
+  categorias: any[] = []
 
   productoForm = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
@@ -27,8 +40,11 @@ export class ProductoComponent {
     descripcion: new FormControl('')
   });
   
-  constructor(private productoService: ProductoService){
+  constructor(private productoService: ProductoService,
+              private categoriaService: CategoriaService,
+              private messageService: MessageService){
     this.listar()
+    this.getCategorias();
   }
 
   loadProductos(event: LazyLoadEvent) {
@@ -58,10 +74,63 @@ export class ProductoComponent {
 
   }
 
+  getCategorias() {
+    this.categoriaService.listar().subscribe(
+      (res:any) => {
+        this.categorias = res;        
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    )
+
+  }
+
   openNew() {
     this.product = {};
     this.submitted = false;
     this.productDialog = true;
+}
+
+guardarProducto(){
+  this.productoService.guardar(this.productoForm.value).subscribe(
+    (res: any) => {
+      this.listar();
+
+      this.productDialog = false;
+      this.productoForm.reset();
+    },
+    (error: any) => {
+      alert("Ocurrió un error al registrar el Producto")
+    }
+  )
+}
+
+dialogImagenProducto(prod){
+  this.productoId = prod.id;
+  this.productDialogImagen = true
+}
+
+
+myUploader(event) {
+  //event.files == files to upload
+  console.log(event.files)
+  let formData = new FormData()
+  formData.append("imagen", event.files[0])
+  
+  this.productoService.actualizarImagen(formData, this.productoId).subscribe(
+    (res: any) => {
+      this.listar()
+      this.messageService.add({severity: 'info', summary: 'Imagen Actualizada', detail: ''});
+
+    },
+    (error: any) => {
+      this.messageService.add({severity: 'error', summary: 'Error al actualizar', detail: ''});
+
+    }
+    )
+    this.productDialogImagen = false
+
 }
 
 
