@@ -6,6 +6,7 @@ import { PedidoInterceptor } from '../interceptors/pedido.interceptor';
 import { UsuarioService } from './services/usuario.service';
 import { CategoriaService } from './services/categoria.service';
 import { ProductoService } from './services/producto.service';
+import { ClienteService } from './services/cliente.service';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ProductoService } from './services/producto.service';
     },
     UsuarioService,
     CategoriaService,
-    ProductoService
+    ProductoService,
+    ClienteService
   ]
 })
 export class CoreModule { }

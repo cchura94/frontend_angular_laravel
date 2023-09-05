@@ -1,0 +1,139 @@
+<div class="grid">
+    <div class="col-7 card">
+        <p-toolbar styleClass="mb-4 gap-2">
+            <ng-template pTemplate="left">
+            </ng-template>
+        
+            <ng-template pTemplate="right">
+                <input id="busc" type="buscar" [formControl]="buscar" placeholder="buscar..." pInputText class="w-full md:w-30rem mb-5" style="padding:1rem" (keyup.enter)="listar()" class="mr-2 inline-block">
+            </ng-template>
+        </p-toolbar>
+    
+        
+        <p-table
+            #dt
+            [value]="products"
+            [lazy]="true"
+            (onLazyLoad)="loadProductos($event)"
+            [loading]="loading"
+            [totalRecords]="totalRecords"
+            [rows]="4"
+            [paginator]="true"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} productos"
+            [showCurrentPageReport]="true"
+        >
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="nombre" style="min-width:15rem">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                <th>Imagen</th>
+                <th pSortableColumn="precio">Precio <p-sortIcon field="precio"></p-sortIcon></th>
+                <th pSortableColumn="categoria_id" style="min-width:5rem">Categoria <p-sortIcon field="categoria_id"></p-sortIcon></th>
+                <th pSortableColumn="stock" style="min-width:2rem">Stock <p-sortIcon field="stock"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+    
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>{{ product.nombre }}</td>
+                <td><img *ngIf="product.imagen" [src]="'http://127.0.0.1:8000/' + product.imagen" [alt]="product.nombre" width="50" class="shadow-4" /></td>
+                <td>{{ product.precio | currency: 'USD' }}</td>
+                <td>{{ product.categoria }}</td>
+                <td>{{ product.stock }}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success mr-2" (click)="addCarrito(product)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    
+        </p-table>
+
+
+    </div>
+    <div class="col-5">
+        <div class="grid">
+            <div class="col-12">
+                <div class="p-2 border-round-sm bg-primary font-bold ">Carrito o Detalle Productos</div>
+                <p-table [value]="carrito">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>NOMBRE</th>
+                            <th>PRECIO</th>
+                            <th>C</th>
+                            <th>ACCION</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-prod>
+                        <tr>
+                            <td>{{ prod.nombre }}</td>
+                            <td>{{ prod.precio }}</td>
+                            <td>
+                                <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-warning mr-2" (click)="reducir(prod)"></button>
+            
+                                {{ prod.cantidad }}
+
+                                <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-warning mr-2" (click)="aumentar(prod)"></button>
+            
+                            </td>
+                            <td>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" (click)="addCarrito(product)"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            <div class="col-12">
+                <div class="p-2 border-round-sm bg-primary font-bold ">
+                    Cliente
+                </div>
+                    <p-toolbar styleClass="mb-4 gap-2">
+                        <ng-template pTemplate="left">
+                            <button pButton pRipple label="Nuevo Cliente" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewCliente()"></button>
+                        </ng-template>
+                    
+                        <ng-template pTemplate="right">
+                            <input id="busc" type="search" [formControl]="buscar_clie" placeholder="buscar cliente..." pInputText class="w-full md:w-30rem mb-5" style="padding:1rem" (keyup.enter)="buscarCliente()" class="mr-2 inline-block">
+                        </ng-template>
+                    </p-toolbar>
+                    <div class="card" *ngIf="cliente_seleccionado">
+                        <h5>CLIENTE: {{ cliente_seleccionado.nombre_completo }}</h5>
+                        <h5>CI/NIT: {{ cliente_seleccionado.ci_nit }}</h5>
+                        <h5>TELEFONO: {{ cliente_seleccionado.telefono }}</h5>
+                    </div>
+
+            </div>
+
+            <div class="col-12">
+                <div class="p-2 border-round-sm bg-primary font-bold ">Generar Pedido</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog [(visible)]="clienteDialog" [style]="{ width: '450px' }" header="Detalles de Cliente" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content" [formGroup]="clienteForm">
+       
+        <div class="field">
+            <label for="name">Nombre Completo</label>
+            <input type="text" pInputText id="name" formControlName="nombre_completo" required autofocus />
+            <small class="p-error" *ngIf="submitted && !cliente.nombre_completo">Nombre es requerido.</small>
+        </div>
+        <div class="field">
+            <label for="ci">CI/NIT</label>
+            <input type="text" pInputText id="ci" formControlName="ci_nit" required />
+        </div>
+
+        <div class="field">
+            <label for="tel">TELEFONO</label>
+            <input type="text" pInputText id="tel" formControlName="telefono" required />
+        </div>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardarCliente()"></button>
+    </ng-template>
+</p-dialog>

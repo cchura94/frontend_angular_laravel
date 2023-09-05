@@ -20,13 +20,19 @@ import { CategoriaComponent } from './components/categoria/categoria.component';
 import { ProductoComponent } from './components/producto/producto.component'
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
+import { NuevoPedidoComponent } from './components/pedido/nuevo-pedido/nuevo-pedido.component';
+import { ListaPedidoComponent } from './components/pedido/lista-pedido/lista-pedido.component';
+import { ClienteComponent } from './components/pedido/cliente/cliente.component';
 
 @NgModule({
   declarations: [
     PerfilComponent,
     UsuarioComponent,
     CategoriaComponent,
-    ProductoComponent
+    ProductoComponent,
+    NuevoPedidoComponent,
+    ListaPedidoComponent,
+    ClienteComponent
   ],
   imports: [
     CommonModule,
