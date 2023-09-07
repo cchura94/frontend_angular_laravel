@@ -7,6 +7,7 @@ import { UsuarioService } from './services/usuario.service';
 import { CategoriaService } from './services/categoria.service';
 import { ProductoService } from './services/producto.service';
 import { ClienteService } from './services/cliente.service';
+import { PedidoService } from './services/pedido.service';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ClienteService } from './services/cliente.service';
     UsuarioService,
     CategoriaService,
     ProductoService,
-    ClienteService
+    ClienteService,
+    PedidoService
   ]
 })
 export class CoreModule { }
