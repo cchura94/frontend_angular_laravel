@@ -6,7 +6,7 @@
     
         <ng-template pTemplate="right">
             <input id="busc" type="buscar" [formControl]="buscar" placeholder="buscar..." pInputText class="w-full md:w-30rem mb-5" style="padding:1rem" (keyup.enter)="listar()" class="mr-2 inline-block">
-            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+            <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help" (click)="exportarArchivo()"></button>
         </ng-template>
     </p-toolbar>
 

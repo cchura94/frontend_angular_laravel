@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Usuario } from 'src/app/core/interfaces/usuario';
 import { UsuarioService } from 'src/app/core/services/usuario.service';
 
 @Component({
@@ -40,7 +41,12 @@ export class UsuarioComponent {
 
   guardarUsuario(){
     if(this.usuario_id){
-      this.usuarioService.modificar(this.usuario_id, this.usuarioForm.value).subscribe(
+      const user: Usuario = {
+        name: this.usuarioForm.value.name,
+        email: this.usuarioForm.value.email,
+        password: this.usuarioForm.value.password
+      }
+      this.usuarioService.modificar(this.usuario_id, user).subscribe(
         (res:any) => {
           this.getUsuarios()
           this.usuario_id = null
@@ -52,7 +58,12 @@ export class UsuarioComponent {
       )
 
     }else{
-      this.usuarioService.guardar(this.usuarioForm.value).subscribe(
+      const user: Usuario = {
+        name: this.usuarioForm.value.name,
+        email: this.usuarioForm.value.email,
+        password: this.usuarioForm.value.password
+      }
+      this.usuarioService.guardar(user).subscribe(
         (res:any) => {
           this.getUsuarios()
         },

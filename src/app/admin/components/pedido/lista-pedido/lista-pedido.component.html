@@ -1,6 +1,8 @@
 <div class="card">
     <h1>Lista Pedidos</h1>
 
+    <button (click)="exportarArchivo()">Exportar EXCEL</button>
+   
     <p-table [value]="pedidos" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
@@ -9,6 +11,7 @@
                 <th>CLIENTE</th>
                 <th>Vendedor</th>
                 <th>PRODUCTOS</th>
+                <th>ACCION</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-pedido>
@@ -20,8 +23,84 @@
 
                 </td>
                 <td>{{ pedido.user?.email }}</td>
-                <td>{{ pedido.productos }}</td>
+                <td>
+                    <p-button (click)="showDialog(pedido)" icon="pi pi-box" label="Productos"></p-button>
+
+                </td>
+                <td>
+                    <p-button (click)="generarPDF(pedido)" icon="pi pi-print"></p-button>
+
+                </td>
             </tr>
         </ng-template>
     </p-table>
+    
+
+    <p-dialog header="Pedido" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" *ngIf="pedido">
+        
+            <table class="table">
+              <tr>
+                <th>Código de Pedido:</th>
+                <td>{{ pedido.cod_pedido }}</td>
+              </tr>
+              <tr>
+                <th>Fecha:</th>
+                <td>{{ pedido.fecha }}</td>
+              </tr>
+              <!-- Agrega más detalles aquí -->
+            </table>
+          
+            <h3>Productos:</h3>
+            <p-table [value]="pedido.productos" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>COD</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <!-- Agrega más columnas si es necesario -->
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                  <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.nombre }}</td>
+                    <td>{{ product.precio }}</td>
+                    <td>{{ product.pivot.cantidad }}</td>
+                    <!-- Agrega más columnas si es necesario -->
+                  </tr>
+                </ng-template>
+              </p-table>
+              
+          
+            <h3>Cliente:</h3>
+            <table class="table">
+              <tr>
+                <th>Nombre Completo:</th>
+                <td>{{ pedido.cliente?.nombre_completo }}</td>
+              </tr>
+              <tr>
+                <th>CI/NIT:</th>
+                <td>{{ pedido.cliente?.ci_nit }}</td>
+              </tr>
+              <!-- Agrega más detalles del cliente aquí -->
+            </table>
+            <h3>Resumen del Pedido</h3>
+
+            <table class="table" *ngIf="pedido">
+                <tr>
+                  <th>Subtotal:</th>
+                  <td>{{ calcularSubtotal() | currency: 'USD' }}</td>
+                </tr>
+                <tr>
+                  <th>Impuesto (IVA 12%):</th>
+                  <td>{{ calcularImpuesto(calcularSubtotal(), 12) | currency: 'USD' }}</td>
+                </tr>
+                <tr>
+                  <th>Total:</th>
+                  <td>{{ calcularTotal(calcularSubtotal(), calcularImpuesto(calcularSubtotal(), 12)) | currency: 'USD' }}</td>
+                </tr>
+              </table>
+
+    </p-dialog>
 </div>

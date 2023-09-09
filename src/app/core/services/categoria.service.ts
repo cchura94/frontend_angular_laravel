@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Categoria } from '../interfaces/categoria';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,10 @@ export class CategoriaService {
   constructor(private http: HttpClient) { }
 
   listar(){
-    return this.http.get(`${this.url_servidor}/categoria`);
+    return this.http.get<Categoria>(`${this.url_servidor}/categoria`);
   }
 
-  guardar( datos: any ){
+  guardar( datos: Categoria ){
     return this.http.post(`${this.url_servidor}/categoria`, datos);
   }
 
@@ -21,7 +22,7 @@ export class CategoriaService {
     return this.http.get(`${this.url_servidor}/categoria/${id}`);
   }
 
-  modificar( id: number, datos: any){
+  modificar( id: number, datos: Categoria){
     return this.http.put(`${this.url_servidor}/categoria/${id}`, datos);
   }
 

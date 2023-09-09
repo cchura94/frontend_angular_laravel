@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Usuario } from '../interfaces/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class UsuarioService {
     return this.http.get(`${this.url_servidor}/usuario`);
   }
 
-  guardar( datos: any ){
+  guardar( datos: Usuario ){
     return this.http.post(`${this.url_servidor}/usuario`, datos);
   }
 
@@ -22,7 +23,7 @@ export class UsuarioService {
     return this.http.get(`${this.url_servidor}/usuario/${id}`);
   }
 
-  modificar( id: number, datos: any){
+  modificar( id: number, datos: Usuario){
     return this.http.put(`${this.url_servidor}/usuario/${id}`, datos);
   }
 

@@ -4,6 +4,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { CategoriaService } from 'src/app/core/services/categoria.service';
 import { ProductoService } from 'src/app/core/services/producto.service';
 import { MessageService } from 'primeng/api';
+import * as XLSX from 'xlsx'
 
 interface UploadEvent {
   originalEvent: Event;
@@ -133,5 +134,15 @@ myUploader(event) {
 
 }
 
+
+exportarArchivo(){
+  /* generar una hoja de trabajo */
+  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.products);
+  /* generar libro de trabajo y agregar la hoja de trabajo */
+  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  /* guardar en archivo */
+  XLSX.writeFile(wb, 'datos.xlsx');
+}
 
 }

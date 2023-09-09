@@ -36,7 +36,13 @@ export class CategoriaComponent {
 
   guardarCategoria(){
     if(this.categoria_id){
-      this.categoriaService.modificar(this.categoria_id, this.categoriaForm.value).subscribe(
+
+      const datos = {
+        nombre: this.categoriaForm.value.nombre,
+        detalle: this.categoriaForm.value.detalle
+      }
+
+      this.categoriaService.modificar(this.categoria_id, datos).subscribe(
         (res) => {
           this.listarCategorias()
           this.visible = false
@@ -51,7 +57,12 @@ export class CategoriaComponent {
 
     }else{
 
-      this.categoriaService.guardar(this.categoriaForm.value).subscribe(
+      const datos = {
+        nombre: this.categoriaForm.value.nombre,
+        detalle: this.categoriaForm.value.detalle
+      }
+
+      this.categoriaService.guardar(datos).subscribe(
         (res) => {
           this.listarCategorias()
           this.visible = false

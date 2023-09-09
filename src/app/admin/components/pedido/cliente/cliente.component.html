@@ -1,3 +1,19 @@
 <div class="card">
     <h1>Gestión Cliente</h1>
+
+    	
+<input type="file" 
+(change)="cargaArchivo($event)" 
+multiple="false">
+
+
+<table border="1">
+<tbody>
+ <tr *ngFor="let row of clientes">
+     <td *ngFor="let cell of row">
+         {{ cell }}
+     </td>
+ </tr>
+</tbody>
+</table>
 </div>
